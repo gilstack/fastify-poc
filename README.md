@@ -1,4 +1,4 @@
-# Storagie Backend
+# Fastify Backend API
 
 Uma API REST robusta e escalável construída com **Fastify**, **TypeScript** e **Clean Architecture** para máxima flexibilidade e manutenibilidade.
 
