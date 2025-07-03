@@ -13,6 +13,18 @@ Uma API REST robusta e escalável construída com **Fastify**, **TypeScript** e 
 - **Testes:** Jest
 - **Qualidade:** ESLint + Prettier
 
+## @TODO - Implementação
+[ ] - Docker (Postgres, Redis, BullMQ, Grafana)
+[x] - Prisma ORM Dispatch
+[ ] - Cache com Redis
+[ ] - Nodemailer Dispatch
+[ ] - Bull Queues + Bull Board
+[ ] - Grafana + Sentry
+[x] - ESLint + Prettier
+[x] - Husky + Lint Staged
+[x] - CommitZen + CommitLint
+[x] - Jest para testes unitários
+
 ## 📁 Estrutura do Projeto
 
 ```
