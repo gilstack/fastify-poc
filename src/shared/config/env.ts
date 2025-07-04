@@ -9,7 +9,7 @@ const envSchema = z.object({
   // Application
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
   HOST: z.string().default('0.0.0.0'),
-  PORT: z.coerce.number().positive().default(3000),
+  PORT: z.coerce.number().positive().default(8000),
   PREFIX: z.string().default('/api/v1'),
 
   // CORS

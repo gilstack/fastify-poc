@@ -1,5 +1,5 @@
 # Build stage
-FROM node:20-alpine AS builder
+FROM node:22.17-alpine AS builder
 
 # Install pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
@@ -20,7 +20,7 @@ COPY . .
 RUN pnpm build
 
 # Production stage
-FROM node:20-alpine AS production
+FROM node:22.17-alpine AS production
 
 # Install pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
@@ -47,7 +47,7 @@ COPY --from=builder --chown=nodejs:nodejs /app/dist ./dist
 USER nodejs
 
 # Expose port
-EXPOSE 3000
+EXPOSE 8000
 
 # Use dumb-init to handle signals properly
 ENTRYPOINT ["dumb-init", "--"]
@@ -56,7 +56,7 @@ ENTRYPOINT ["dumb-init", "--"]
 CMD ["node", "dist/server.js"]
 
 # Development stage
-FROM node:20-alpine AS development
+FROM node:22.17-alpine AS development
 
 # Install pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
@@ -74,7 +74,7 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 
 # Expose port
-EXPOSE 3000
+EXPOSE 8000
 
 # Start development server
 CMD ["pnpm", "dev"]

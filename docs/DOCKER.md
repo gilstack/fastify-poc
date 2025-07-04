@@ -20,7 +20,7 @@ Este documento descreve como usar o Docker para executar o projeto localmente.
 
 Orquestra os seguintes serviços:
 
-- **api**: Aplicação backend (porta 3000)
+- **api**: Aplicação backend (porta 8000) - Node.js 22.17
 - **postgres**: PostgreSQL 16 (porta 5432)
 - **redis**: Redis 7 (porta 6379)
 - **mailhog**: Servidor SMTP para testes (porta 1025 e Web UI na 8025)
@@ -114,7 +114,7 @@ cp .env.example .env
 
 ```bash
 # Verificar processos usando as portas
-lsof -i :3000
+lsof -i :8000
 lsof -i :5432
 lsof -i :6379
 ```
