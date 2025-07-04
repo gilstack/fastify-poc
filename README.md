@@ -10,20 +10,23 @@ Uma API REST robusta e escalável construída com **Fastify**, **TypeScript** e 
 - **Cache:** Redis
 - **Filas:** BullMQ
 - **Email:** Nodemailer
-- **Testes:** Jest
+- **Testes:** Jest + Supertest
 - **Qualidade:** ESLint + Prettier
+- **Commits:** CommitZen + CommitLint
+- **Git Hooks:** Husky + Lint Staged
 
 ## @TODO - Implementação
-[ ] - Docker (Postgres, Redis, BullMQ, Grafana)
-[x] - Prisma ORM Dispatch
-[ ] - Cache com Redis
-[ ] - Nodemailer Dispatch
-[ ] - Bull Queues + Bull Board
-[ ] - Grafana + Sentry
-[x] - ESLint + Prettier
-[x] - Husky + Lint Staged
-[x] - CommitZen + CommitLint
-[x] - Jest para testes unitários
+
+- [ ] Docker (Postgres, Redis, BullMQ, Grafana)
+- [x] Prisma ORM Dispatch
+- [ ] Cache com Redis
+- [ ] Nodemailer Dispatch
+- [ ] Bull Queues + Bull Board
+- [ ] Grafana + Sentry
+- [x] - ESLint + Prettier
+- [x] - Husky + Lint Staged
+- [x] - CommitZen + CommitLint
+- [x] - Jest para testes unitários
 
 ## 📁 Estrutura do Projeto
 
@@ -108,3 +111,9 @@ O projeto segue os princípios da **Arquitetura Limpa** (Clean Architecture):
 - **Imports consistentes** - Uso de type imports quando apropriado
 - **Código limpo** - Seguindo princípios SOLID
 - **Documentação** - JSDoc em funções complexas
+
+## 📚 Documentação
+
+- [Arquitetura](docs/ARCHITECTURE.md) - Detalhes sobre a arquitetura do projeto
+- [Testes](docs/TESTING.md) - Guia completo de testes e estratégias
+- [API](docs/API.md) - Documentação da API e endpoints

@@ -16,12 +16,23 @@ const config = {
     ]
   },
   moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1',
+    // HTTP infrastructure aliases (must come before generic @/)
+    '^@/http/handlers/(.*)$': '<rootDir>/src/infrastructure/http/handlers/$1',
+    '^@/http/handlers$': '<rootDir>/src/infrastructure/http/handlers',
+    '^@/http/hooks/(.*)$': '<rootDir>/src/infrastructure/http/hooks/$1',
+    '^@/http/hooks$': '<rootDir>/src/infrastructure/http/hooks',
+    '^@/http/plugins/(.*)$': '<rootDir>/src/infrastructure/http/plugins/$1',
+    '^@/http/plugins$': '<rootDir>/src/infrastructure/http/plugins',
+    '^@/http/config/(.*)$': '<rootDir>/src/infrastructure/http/config/$1',
+    '^@/http/config$': '<rootDir>/src/infrastructure/http/config',
+    // Domain-specific aliases
     '^@/application/(.*)$': '<rootDir>/src/application/$1',
     '^@/domain/(.*)$': '<rootDir>/src/domain/$1',
     '^@/infrastructure/(.*)$': '<rootDir>/src/infrastructure/$1',
     '^@/presentation/(.*)$': '<rootDir>/src/presentation/$1',
-    '^@/shared/(.*)$': '<rootDir>/src/shared/$1'
+    '^@/shared/(.*)$': '<rootDir>/src/shared/$1',
+    // Generic alias (must come last)
+    '^@/(.*)$': '<rootDir>/src/$1'
   },
   setupFilesAfterEnv: ['<rootDir>/tests/setup.ts'],
   collectCoverageFrom: [
@@ -35,12 +46,11 @@ const config = {
   coverageDirectory: 'coverage',
   coverageReporters: ['text', 'lcov', 'html', 'json'],
   coverageThreshold: {
-    // TODO: Aumentar os limites de cobertura quando os testes forem implementados
     global: {
-      branches: 0,
-      functions: 0,
-      lines: 0,
-      statements: 0
+      branches: 85,
+      functions: 85,
+      lines: 85,
+      statements: 85
     }
   },
   verbose: true,

@@ -1,11 +1,11 @@
 import { BaseError } from './base-error'
 
 export class ValidationError extends BaseError {
+  public readonly details?: unknown
+
   constructor(message: string, details?: unknown) {
     super(message, 400, 'VALIDATION_ERROR')
-    if (details) {
-      Object.assign(this, { details })
-    }
+    this.details = details
   }
 }
 
@@ -57,5 +57,11 @@ export class TooManyRequestsError extends BaseError {
 export class ServiceUnavailableError extends BaseError {
   constructor(message = 'Service temporarily unavailable') {
     super(message, 503, 'SERVICE_UNAVAILABLE')
+  }
+}
+
+export class CorsError extends BaseError {
+  constructor(message = 'Not allowed by CORS') {
+    super(message, 403, 'CORS_ERROR')
   }
 }

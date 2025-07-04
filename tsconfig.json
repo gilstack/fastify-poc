@@ -30,15 +30,27 @@
     "baseUrl": "./src",
     "paths": {
       "@/*": ["*"],
+
+      //* Root Sources
       "@/application/*": ["application/*"],
       "@/domain/*": ["domain/*"],
       "@/infrastructure/*": ["infrastructure/*"],
       "@/presentation/*": ["presentation/*"],
-      "@/shared/*": ["shared/*"]
+      "@/shared/*": ["shared/*"],
+
+      //* HTTP Infrastructure
+      "@/http/handlers/*": ["infrastructure/http/handlers/*"],
+      "@/http/handlers": ["infrastructure/http/handlers"],
+      "@/http/hooks/*": ["infrastructure/http/hooks/*"],
+      "@/http/hooks": ["infrastructure/http/hooks"],
+      "@/http/plugins/*": ["infrastructure/http/plugins/*"],
+      "@/http/plugins": ["infrastructure/http/plugins"],
+      "@/http/config/*": ["infrastructure/http/config/*"],
+      "@/http/config": ["infrastructure/http/config"]
     }
   },
   "include": ["src/**/*", "tests/**/*"],
-  "exclude": ["node_modules", "dist", "**/*.spec.ts", "**/*.test.ts"],
+  "exclude": ["node_modules", "dist", "**/*.spec.ts"],
   "ts-node": {
     "require": ["tsconfig-paths/register"]
   }
