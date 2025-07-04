@@ -88,6 +88,7 @@ jspm_packages/
 .vscode-test
 
 # IDE
+.cursor/
 .vscode/
 .idea/
 *.swp
