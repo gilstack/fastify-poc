@@ -1,0 +1,43 @@
+services:
+  # Test Database
+  postgres-test:
+    image: postgres:16-alpine
+    container_name: storagie-postgres-test
+    restart: unless-stopped
+    ports:
+      - '5433:5432'
+    environment:
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=test
+      - POSTGRES_DB=storagie_test
+    tmpfs:
+      - /var/lib/postgresql/data
+    networks:
+      - storagie-test-network
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U test']
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # Test Redis
+  redis-test:
+    image: redis:7-alpine
+    container_name: storagie-redis-test
+    restart: unless-stopped
+    ports:
+      - '6380:6379'
+    command: redis-server --save ""
+    tmpfs:
+      - /data
+    networks:
+      - storagie-test-network
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+networks:
+  storagie-test-network:
+    driver: bridge

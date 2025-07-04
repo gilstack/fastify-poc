@@ -2,24 +2,24 @@ import type { Server } from 'http'
 
 import { config } from 'dotenv'
 
-// Carrega variáveis de ambiente para testes
-config({ path: '.env.test' })
+// Load environment variables
+config()
 
-// Armazena referências de recursos que precisam cleanup
+// Store references to resources that need cleanup
 const openHandles: Set<Server | NodeJS.Timeout> = new Set()
 
-// Configurações globais para testes
+// Global settings for tests
 beforeAll(() => {
-  // Setup global para todos os testes
+  // Setup global for all tests
   process.env['NODE_ENV'] = 'test'
   process.env['LOG_LEVEL'] = 'error'
 
-  // Timeout global para testes
+  // Global timeout for tests
   jest.setTimeout(10000)
 })
 
 afterAll(async () => {
-  // Cleanup de recursos abertos
+  // Cleanup open resources
   const handlePromises = Array.from(openHandles).map((handle) => {
     if ('close' in handle) {
       return new Promise<void>((resolve) => {
@@ -34,34 +34,34 @@ afterAll(async () => {
   await Promise.all(handlePromises)
   openHandles.clear()
 
-  // Aguarda um pequeno delay para garantir cleanup completo
+  // Wait for a small delay to ensure complete cleanup
   await new Promise((resolve) => setTimeout(resolve, 100))
 })
 
-// Mock global do console para reduzir ruído nos testes
+// Mock global console to reduce noise in tests
 if (process.env['SILENT_TESTS'] === 'true') {
   global.console = {
     ...console,
     log: jest.fn(),
     info: jest.fn(),
     warn: jest.fn(),
-    // Mantém error para debugging
+    // Keep error for debugging
     // eslint-disable-next-line no-console
     error: console.error
   }
 }
 
-// Função helper para registrar handles que precisam cleanup
+// Helper function to register handles that need cleanup
 export function registerHandle(handle: Server | NodeJS.Timeout): void {
   openHandles.add(handle)
 }
 
-// Função helper para remover handles após cleanup manual
+// Helper function to remove handles after manual cleanup
 export function unregisterHandle(handle: Server | NodeJS.Timeout): void {
   openHandles.delete(handle)
 }
 
-// Extend expect com matchers customizados úteis
+// Extend expect with useful custom matchers
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace jest {
