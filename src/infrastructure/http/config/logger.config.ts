@@ -6,6 +6,8 @@ import type { PinoLoggerOptions } from 'fastify/types/logger'
 type LoggerConfig = FastifyLoggerOptions & PinoLoggerOptions
 
 export function getLoggerConfig(): LoggerConfig {
+  if (process.env['NODE_ENV'] === 'test') return { level: 'silent' }
+
   if (isDevelopment) {
     return {
       level: env.LOG_LEVEL,

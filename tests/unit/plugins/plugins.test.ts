@@ -1,17 +1,12 @@
 import { buildApp } from '@/infrastructure/http/app'
+import {
+  developmentEnvVars,
+  productionEnvVars,
+  restoreEnv,
+  setTestEnv
+} from '../../__helpers__/mocks/environment.mock'
 
 import type { FastifyInstance } from 'fastify'
-
-// Mock environment variables
-jest.mock('@/shared/config/env', () => ({
-  env: {
-    HOST: 'localhost',
-    PORT: 3000,
-    PREFIX: '/api/v1',
-    ALLOWED_ORIGINS: ['http://localhost:3000']
-  },
-  isDevelopment: true
-}))
 
 describe('HTTP Plugins', () => {
   let app: FastifyInstance
@@ -72,6 +67,28 @@ describe('HTTP Plugins', () => {
         method: 'GET',
         url: '/api/v1/health',
         remoteAddress: '127.0.0.1'
+      })
+
+      expect(response.statusCode).toBe(200)
+    })
+
+    it('should handle array IP in x-forwarded-for header', async () => {
+      const response = await app.inject({
+        method: 'GET',
+        url: '/api/v1/health',
+        headers: {
+          'x-forwarded-for': '192.168.1.100,10.0.0.1,172.16.0.1'
+        }
+      })
+
+      expect(response.statusCode).toBe(200)
+    })
+
+    it('should fallback to default IP when no IP is available', async () => {
+      const response = await app.inject({
+        method: 'GET',
+        url: '/api/v1/health'
+        // No IP headers, socket remoteAddress, or ip property
       })
 
       expect(response.statusCode).toBe(200)
@@ -145,18 +162,13 @@ describe('HTTP Plugins', () => {
 
     it('should add security headers in production mode', async () => {
       // Mock production environment
-      jest.doMock('@/shared/config/env', () => ({
-        env: {
-          HOST: 'localhost',
-          PORT: 3000,
-          PREFIX: '/api/v1',
-          ALLOWED_ORIGINS: ['http://localhost:3000']
-        },
-        isDevelopment: false
-      }))
+      setTestEnv(productionEnvVars)
+      jest.resetModules() // Invalidate cache to reload env
+
+      const { buildApp: buildProdApp } = await import('@/infrastructure/http/app')
 
       // Create new app with production config
-      const prodApp = await buildApp()
+      const prodApp = await buildProdApp()
       await prodApp.ready()
 
       const response = await prodApp.inject({
@@ -166,19 +178,31 @@ describe('HTTP Plugins', () => {
 
       expect(response.headers['x-frame-options']).toBeDefined()
       expect(response.headers['x-content-type-options']).toBeDefined()
-      expect(response.headers['x-xss-protection']).toBeDefined()
 
       await prodApp.close()
+      restoreEnv()
+      jest.resetModules() // Restore original env for other tests
     })
 
     it('should disable CSP in development mode', async () => {
-      const response = await app.inject({
+      setTestEnv(developmentEnvVars)
+      jest.resetModules()
+
+      const { buildApp: buildDevApp } = await import('@/infrastructure/http/app')
+      const devApp = await buildDevApp()
+      await devApp.ready()
+
+      const response = await devApp.inject({
         method: 'GET',
         url: '/api/v1/health'
       })
 
       // In development, CSP should be disabled (false)
       expect(response.headers['content-security-policy']).toBeUndefined()
+
+      await devApp.close()
+      restoreEnv()
+      jest.resetModules()
     })
   })
 

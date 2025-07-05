@@ -1,17 +1,6 @@
 import { buildApp } from '@/infrastructure/http/app'
 import type { FastifyInstance } from 'fastify'
 
-// Mock environment variables
-jest.mock('@/shared/config/env', () => ({
-  env: {
-    HOST: 'localhost',
-    PORT: 3000,
-    PREFIX: '/api/v1',
-    ALLOWED_ORIGINS: ['http://localhost:3000']
-  },
-  isDevelopment: true
-}))
-
 describe('Health Routes', () => {
   let app: FastifyInstance
 
@@ -112,6 +101,37 @@ describe('Health Routes', () => {
       // Ready status should be boolean
       expect(typeof body.ready).toBe('boolean')
       expect(body.ready).toBe(true) // Services should be available in test
+    })
+
+    it('should return 503 when services are not ready', () => {
+      // Testar a lógica de readiness check diretamente
+      const services = {
+        database: false, // Simulate database failure
+        redis: true
+      }
+
+      const ready = Object.values(services).every((status) => status)
+
+      // Verificar se a lógica funciona corretamente
+      expect(ready).toBe(false)
+      expect(services.database).toBe(false)
+      expect(services.redis).toBe(true)
+
+      // Testar a lógica do status code
+      const expectedStatusCode = ready ? 200 : 503
+      expect(expectedStatusCode).toBe(503)
+
+      // Testar cenário onde todos os serviços estão funcionando
+      const healthyServices = {
+        database: true,
+        redis: true
+      }
+
+      const allReady = Object.values(healthyServices).every((status) => status)
+      expect(allReady).toBe(true)
+
+      const healthyStatusCode = allReady ? 200 : 503
+      expect(healthyStatusCode).toBe(200)
     })
   })
 

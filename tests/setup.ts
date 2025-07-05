@@ -1,19 +1,19 @@
 import type { Server } from 'http'
 
 import { config } from 'dotenv'
+import { setTestEnv, testEnvVars } from './__helpers__/mocks/environment.mock'
 
 // Load environment variables
 config()
+
+// Set environment for tests
+setTestEnv(testEnvVars)
 
 // Store references to resources that need cleanup
 const openHandles: Set<Server | NodeJS.Timeout> = new Set()
 
 // Global settings for tests
 beforeAll(() => {
-  // Setup global for all tests
-  process.env['NODE_ENV'] = 'test'
-  process.env['LOG_LEVEL'] = 'error'
-
   // Global timeout for tests
   jest.setTimeout(10000)
 })
@@ -33,6 +33,8 @@ afterAll(async () => {
 
   await Promise.all(handlePromises)
   openHandles.clear()
+
+  if (global.gc) global.gc()
 
   // Wait for a small delay to ensure complete cleanup
   await new Promise((resolve) => setTimeout(resolve, 100))

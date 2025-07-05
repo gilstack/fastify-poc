@@ -58,7 +58,9 @@ const config = {
   restoreMocks: true,
   testTimeout: 10000,
   detectOpenHandles: true,
-  forceExit: true
+  forceExit: true,
+  maxWorkers: 1,
+  workerIdleMemoryLimit: '512MB'
 }
 
 module.exports = config
