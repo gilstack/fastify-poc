@@ -1,7 +1,7 @@
 import type { Server } from 'http'
 
 import { config } from 'dotenv'
-import { setTestEnv, testEnvVars } from './__helpers__/mocks/environment.mock'
+import { setTestEnv, testEnvVars } from './__mocks__/environment.mock'
 
 // Load environment variables
 config()

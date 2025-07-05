@@ -4,7 +4,7 @@ import {
   productionEnvVars,
   restoreEnv,
   setTestEnv
-} from '../../__helpers__/mocks/environment.mock'
+} from '../../__mocks__/environment.mock'
 
 import type { FastifyInstance } from 'fastify'
 

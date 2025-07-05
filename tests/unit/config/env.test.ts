@@ -7,8 +7,8 @@ import {
   setTestEnv,
   restoreEnv,
   createTestEnv
-} from '../../__helpers__/mocks/environment.mock'
-import { setupCommonMocks, cleanupMocks } from '../../__helpers__/mocks/app.mock'
+} from '../../__mocks__/environment.mock'
+import { setupCommonMocks, cleanupMocks } from '../../__mocks__/app.mock'
 
 describe('Environment Configuration', () => {
   beforeEach(() => {
